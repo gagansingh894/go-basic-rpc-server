@@ -13,7 +13,7 @@ import (
 
 func main() {
 	go func() {
-		time.Sleep(5)
+		time.Sleep(time.Second * 2)
 		fmt.Println("Running client test")
 		client.TestClient()
 	}()
