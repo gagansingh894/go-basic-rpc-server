@@ -7,7 +7,11 @@ type Item struct {
 
 var database []Item
 
-func GetByName(title string) Item {
+// implement custom type
+// this is used to convert functions to methods as it is the requirement og rpc to have methods
+type API int
+
+func (a *API) GetByName(title string, reply *Item) error {
 	var getItem Item
 
 	for _, item := range database {
@@ -16,15 +20,17 @@ func GetByName(title string) Item {
 			break
 		}
 	}
-	return getItem
+	*reply = getItem
+	return nil
 }
 
-func CreateItem(item Item) Item {
+func (a *API) CreateItem(item Item, reply *Item) error {
 	database = append(database, item)
-	return item
+	*reply = item
+	return nil
 }
 
-func EditItem(edit Item) Item {
+func (a *API) EditItem(edit Item, reply *Item) error {
 	var changedItem Item
 
 	for idx, item := range database {
@@ -34,10 +40,11 @@ func EditItem(edit Item) Item {
 			break
 		}
 	}
-	return changedItem
+	*reply = changedItem
+	return nil
 }
 
-func DeleteItem(toDelete Item) Item {
+func (a *API) DeleteItem(toDelete Item, reply *Item) error {
 	var deletedItem Item
 
 	for idx, item := range database {
@@ -46,5 +53,6 @@ func DeleteItem(toDelete Item) Item {
 			deletedItem = toDelete
 		}
 	}
-	return deletedItem
+	*reply = deletedItem
+	return nil
 }
