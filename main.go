@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/gagansingh894/go-basic-rpc-server/client"
 	"github.com/gagansingh894/go-basic-rpc-server/server"
@@ -8,16 +9,20 @@ import (
 	"net"
 	"net/http"
 	"net/rpc"
-	"time"
 )
 
 func main() {
-	go func() {
-		time.Sleep(time.Second * 2)
-		fmt.Println("Running client test")
-		client.TestClient()
-	}()
+	isServerFlag := flag.Bool("server", false, "Run code for server")
+	flag.Parse()
 
+	if *isServerFlag {
+		runServer()
+	} else {
+		runClient()
+	}
+}
+
+func runServer() {
 	api := new(server.API)
 	err := rpc.Register(api)
 	if err != nil {
@@ -34,5 +39,9 @@ func main() {
 	if err != nil {
 		log.Fatal("error serving: ", err)
 	}
+}
 
+func runClient() {
+	fmt.Println("Running client code")
+	client.RunClient()
 }
