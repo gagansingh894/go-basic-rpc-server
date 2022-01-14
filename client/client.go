@@ -11,7 +11,7 @@ type Item struct {
 	Body  string
 }
 
-func TestClient() {
+func RunClient() {
 	var reply Item
 	var db []Item
 
